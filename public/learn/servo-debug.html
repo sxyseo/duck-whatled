@@ -125,7 +125,7 @@
 <h1 id="macos-舵机调试id-设置与图纸查看手册">macOS 舵机调试、ID 设置与图纸查看手册</h1>
 <blockquote>
 <p>回答三个问题：① Mac 上怎么调试舵机？② 怎么给舵机设置 ID？③ 各类图纸/电路图用什么软件看？<br />
-前置：<a href="新手学习文档.md">新手学习文档</a>（概念）、<a href="进阶学习文档-训练仿真与部署.md">进阶篇</a>（训练与部署）。<br />
+前置：<a href="/learn/newbie">新手学习文档</a>（概念）、<a href="/learn/advanced">进阶篇</a>（训练与部署）。<br />
 本手册只讲 macOS 实操，所有路径都对应你工作区里的真实文件。</p>
 </blockquote>
 <hr />
@@ -196,7 +196,7 @@
 # 解析不了就去路由器后台查 IP，用 ssh 用户名@192.168.x.x
 </code></pre>
 <h3 id="13-接线改线前永远先断电">1.3 接线（改线前永远先断电）</h3>
-<p>照 <a href="../microduck-replica/rl-series/scripts/pi_sg90_bench.py">pi_sg90_bench.py</a> 头注释：</p>
+<p>照 <a href="https://github.com/sxyseo/microduck-replica/blob/master/rl-series/scripts/pi_sg90_bench.py">pi_sg90_bench.py</a> 头注释：</p>
 <pre><code>SG90 橙线(信号) → GPIO 17 / 27 / 22 / 23 / 24（BCM 编号，物理引脚见 pinout.xyz）
 SG90 红线(电源) → 外接 5V≥3A 电源正极     ⚠️ 绝不要接 Pi 的 5V！
 SG90 棕线(地)   → 外接电源负极，并且和 Pi 的 GND 至少连一根线（共地！）
@@ -244,7 +244,7 @@ python3 pi_sg90_bench.py 4   # ④ 开环漂移：命令 90° 后手指捏住输
 </tr>
 </tbody>
 </table>
-<p>来源：<a href="../microduck-replica/docs/电控采购清单.md">电控采购清单</a>（含淘宝实链）、<a href="../microduck-build-tutorial/README.md">Microduck-build-tutorial BOM</a>。</p>
+<p>来源：<a href="https://github.com/sxyseo/microduck-replica/blob/master/docs/电控采购清单.md">电控采购清单</a>（含淘宝实链）、<a href="https://github.com/sxyseo/Microduck-build-tutorial/blob/main/README.md">Microduck-build-tutorial BOM</a>。</p>
 <p><strong>Feetech 舵机 + 没有图形软件的三个替代</strong>（按省事排序）：<br />
 1. <strong>Python SDK</strong>：Feetech 官方 SCServo SDK（GitHub 上有 Python 版），Mac 终端直接跑，扫 ID、改 ID、读角度几行代码的事；<br />
 2. <strong>在 Pi 上跑</strong>：把调试板插 Pi，用 SDK/串口调试，Mac ssh 过去——和 SG90 台架同一套工作流；<br />
@@ -373,11 +373,11 @@ ls /dev/tty.usb*
 </tr>
 </tbody>
 </table>
-<p>出处：<a href="../microduck-replica/docs/硬件规格速查.md">硬件规格速查</a>。</p>
-<p><strong>平价教程路线</strong>（Pi Zero 2W + OpenRB-150，仅作对照）：ID 1–15（1=右踝…10=左踝…11–14=头颈，15=嘴），出处见 <a href="../microduck-build-tutorial/README.md">Microduck-build-tutorial</a>。</p>
+<p>出处：<a href="https://github.com/sxyseo/microduck-replica/blob/master/docs/硬件规格速查.md">硬件规格速查</a>。</p>
+<p><strong>平价教程路线</strong>（Pi Zero 2W + OpenRB-150，仅作对照）：ID 1–15（1=右踝…10=左踝…11–14=头颈，15=嘴），出处见 <a href="https://github.com/sxyseo/Microduck-build-tutorial/blob/main/README.md">Microduck-build-tutorial</a>。</p>
 <p>装错表的后果：部署代码按 ID 找关节，表混了 = 左腿当成右腿 = 一上电就劈叉。</p>
 <h3 id="44-feetech-舵机设-id">4.4 Feetech 舵机设 ID</h3>
-<p>同样一次一只（出厂 ID 也是 1）。FD 软件里直接改 ID/波特率；Python SDK 里调 <code>WriteByte(ID, 5, new_id)</code> 一类的接口（不同 SDK 封装略有差异，照其 examples/ping 改）。飞特出厂 Return Delay 已是 0（出处：<a href="../microduck-replica/docs/电控采购清单.md">电控采购清单</a> 注释）， baud 出厂 1Mbps，要改的主要就是 ID。改完同样贴标签。</p>
+<p>同样一次一只（出厂 ID 也是 1）。FD 软件里直接改 ID/波特率；Python SDK 里调 <code>WriteByte(ID, 5, new_id)</code> 一类的接口（不同 SDK 封装略有差异，照其 examples/ping 改）。飞特出厂 Return Delay 已是 0（出处：<a href="https://github.com/sxyseo/microduck-replica/blob/master/docs/电控采购清单.md">电控采购清单</a> 注释）， baud 出厂 1Mbps，要改的主要就是 ID。改完同样贴标签。</p>
 <h3 id="45-sg90-没有-id">4.5 SG90 没有 ID</h3>
 <p>PWM 舵机每只独占一根信号线，"地址"就是它插的 GPIO 脚号（17/27/22/23/24/25）——这也是 PWM 方案 15 只舵机要拉 15 根线、总线方案只要一根线的直观区别。</p>
 <hr />
@@ -455,7 +455,7 @@ ls /dev/tty.usb*
 </tr>
 </tbody>
 </table>
-<p><strong>建议的阅读顺序</strong>（配合新手篇第 5、6 节的读图五步法）：先看 <a href="../microduck-replica/docs/硬件规格速查.md">硬件规格速查</a> 的系统框图（知道有哪些块）→ 接线表（知道每根线去哪）→ 原理图 PDF（块内怎么连）→ 嘉立创 EDA 打开工程（对照 3D 看 PCB）→ 装配爆炸图 PNG（机械侧）→ 21 页说明书（装配顺序）。</p>
+<p><strong>建议的阅读顺序</strong>（配合新手篇第 5、6 节的读图五步法）：先看 <a href="https://github.com/sxyseo/microduck-replica/blob/master/docs/硬件规格速查.md">硬件规格速查</a> 的系统框图（知道有哪些块）→ 接线表（知道每根线去哪）→ 原理图 PDF（块内怎么连）→ 嘉立创 EDA 打开工程（对照 3D 看 PCB）→ 装配爆炸图 PNG（机械侧）→ 21 页说明书（装配顺序）。</p>
 <hr />
 <h2 id="6-一个周末的实操串联">6. 一个周末的实操串联</h2>
 <p><strong>周六（SG90 日，¥0）</strong><br />
