@@ -95,6 +95,14 @@ DOCS = [
         "tag": "MANUAL 04 · 调试篇",
         "date": "2026-09-11",
     },
+    {
+        "src": "/Volumes/dev/dev/microduck/docs/HD1910仿真迁移与PPO训练教程.md",
+        "out": "hd1910-tutorial.html",
+        "title": "HD-1910 仿真迁移与 PPO 训练教程",
+        "desc": "从 XL330 到 HD-1910：机械与执行器参数迁移、BAM 建模、PPO 训练、横移与转向评测、ONNX 导出，以及真机验证的完整路线。",
+        "tag": "MANUAL 05 · HD-1910 迁移篇",
+        "date": "2026-09-19",
+    },
 ]
 
 
