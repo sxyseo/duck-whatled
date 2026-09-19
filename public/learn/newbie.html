@@ -989,7 +989,8 @@ Ping/只读命令，不要运行 <code>--move-center</code> 或摆锤记录器�
 <ul>
 <li>Goal：证明一只舵机可稳定读写。</li>
 <li>Files：新增测试脚本或临时工具，不碰行走策略。</li>
-<li>Action：用 FE-URT-1 或兼容半双工 TTL 调试器；12 V 限流供电；完成 PING、读位置、<br />
+<li>Action：用 FE-URT-2 或兼容半双工 TTL 调试器；URT2 用 USB-C 通信、舵机用独立 12 V 限流<br />
+  电源；完成 PING、读位置、<br />
   写目标位置、读电压和温度。</li>
 <li>Why：先排除供电、接线、协议问题。</li>
 <li>Verification：连续读写 10 分钟无随机丢包；低速小角度移动；扭矩可关闭。</li>
@@ -1066,9 +1067,12 @@ Ping/只读命令，不要运行 <code>--move-center</code> 或摆锤记录器�
 <li>BAM 摆锤记录器（工作区文件）：在独立摆锤台架上，以受限幅度采集可直接交给 BAM 的 JSON；它会开扭矩，不能当作只读工具。</li>
 </ul>
 <h3 id="131-先准备硬件">13.1 先准备硬件</h3>
-<p>你至少需要：两只 HL-2915-C001、一个支持单线半双工 TTL 的 Feetech 调试器（例如官方 FE-URT-1/FE-URT1-C001）、<br />
+<p>你至少需要：两只 HL-2915-C001、一个支持单线半双工 TTL 的 Feetech 调试器（本项目使用官方 FE-URT-2/FE-URT2-C001）、<br />
 一个可限流的 12 V 电源、万用表和一根 USB 线。Radxa 的 5 V 电源不能直接接到舵机 Vcc，<br />
 树莓派和小智 ESP32 也先不要接舵机总线。</p>
+<p>URT2 的 USB-C 只负责给调试器逻辑供电并建立 COM 口；舵机电源接 TTL 侧 <code>G/V1</code>，HL-2915<br />
+接 <code>TTL-Bus</code>，不要接 RS485 侧 <code>V2</code>。完整接线和 FD 首次调试顺序见<br />
+两只舵机现场验收表（工作区文件）。</p>
 <p>舵机 PH1.25-3P 的线序按官方资料核对：</p>
 <pre><code class="language-text">1 = GND（电源负极、调试器 GND、Radxa GND 共地）
 2 = Vcc（先用 12 V，限流）
