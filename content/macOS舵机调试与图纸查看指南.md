@@ -121,6 +121,7 @@ ls /dev/tty.usb*
 - **官方软件页**：<https://www.feetechrc.com/software.html>（国际站）或 <https://www.feetech.cn/software.html>（中文站）——提供 FD1.9.8.3 / FD1.9.8.2（离线版，Windows）、**"FD上位软件下载"** 资源包（内含各平台版本，macOS 版即从这里取；Hugging Face LeRobot 文档也确认了 macOS 版 FD 的存在）。
 - **"Servo Web" 网页版**：官网页面没有公开直链——在"FD上位软件下载"资源包内，或直接向飞特客服索取（报舵机型号 HL-2915-C001 + 调试板 URT2 即可）。Web 版基于 Chrome 的 Web Serial,用 Chrome/Edge 打开、macOS 授权串口即可,免安装。
 - **注意**：FD 离线版 zip 多为 Windows 程序;macOS 上最省事的路线是 Web 版,或直接用本项目现成的 `microduck-replica/rl-series/scripts/hl2915_bench.py`（pyserial 原生,六课脚本,HL-2915 专用寄存器已内置,见解读 63）。
+- **本项目网页版调试台**:https://duck.whatled.com/tools/servo-debug-web —— Chrome/Edge 打开,Web Serial 直连 URT2:遥测仪表、位置滑杆与限幅、P/D/I 增益、行程/保护 EEPROM 读写、急停,免安装、跨平台。
 
 ## 3. 用 Dynamixel Wizard 2.0 调试（Dynamixel 路线）
 
