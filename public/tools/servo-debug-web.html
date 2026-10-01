@@ -70,6 +70,8 @@
       <label>舵机 ID</label>
       <input id="sid" type="number" min="1" max="253" value="1" style="width:80px">
       <button class="small" id="btnPing">PING</button>
+      <button class="small" id="btnReboot" disabled title="清除跑飞/堵转后的锁死保护状态(相当于断电重启)">REBOOT 清锁</button>
+      <button class="small" id="btnInit" disabled title="写入温和参数:P=16 加速度5000 扭矩限30%">一键初始化</button>
     </div>
     <div class="row">
       <button class="primary" id="btnConn">🔌 连接舵机</button>
@@ -291,7 +293,7 @@ $("btnConn").onclick = async () => {
     }
   }catch(e){} })();
   sid=Number($("sid").value); txN=toN=0;
-  ["btnPing","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=false);
+  ["btnPing","btnReboot","btnInit","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=false);
   $("state").textContent="已连接"; $("state").className="tag on";
   const m=model();
   log(`已连接 ${baudName()} · ${m.name} · ID=${sid};先 PING,再开始遥测`);
@@ -305,9 +307,33 @@ $("btnDisc").onclick = async () => {
   keepReading=false; try{ reader&&await reader.cancel(); }catch(e){}
   try{ await port.close(); }catch(e){}
   port=null; $("state").textContent="未连接"; $("state").className="tag off";
-  ["btnPing","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=true);
+  ["btnPing","btnReboot","btnInit","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=true);
   clearInterval(telemTimer); log("已断开");
 };
+$("btnReboot").onclick = async () => {
+  if(!confirm("REBOOT 会复位舵机(清锁保护、参数回出厂、多圈计数清零)。确认?")) return;
+  try{
+    s_write_raw(packet(1, 0x08));   // instr 0x08 = REBOOT(无应答)
+    log("REBOOT 已发送,等待 2.5 秒……");
+    await new Promise(r=>setTimeout(r,2500));
+    const p = await rd(REG.POS,2);
+    if(p) log(`✓ REBOOT 完成,位置 ${(p[0]|(p[1]<<8))}`);
+    else log("⚠ REBOOT 后无应答——再点一次 PING 确认通信");
+  }catch(e){ log("REBOOT 失败:"+e.message); }
+};
+$("btnInit").onclick = async () => {
+  try{
+    await wr(21,[16]); await wr(22,[0]); await wr(23,[0]);
+    await wr(41,[0xF4,0x01]);          // 加速度 500 (=50000 步/s²? 500×100)
+    await wr(48,[0x2C,0x01]);          // 扭矩限 300 (30%)
+    await wr(40,[1]);
+    log("✓ 温和参数已写入:P=16 D=0 I=0 加速度500 扭矩限30% 扭矩开");
+  }catch(e){ log("初始化失败:"+e.message); }
+};
+function s_write_raw(bytes){
+  const w = port.writable.getWriter();
+  w.write(bytes); w.releaseLock();
+}
 $("btnPing").onclick = async () => {
   sid=Number($("sid").value);
   try{ await transact(sid,0x01); log(`PING ID=${sid} 成功,舵机在线`); }
