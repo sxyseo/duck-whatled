@@ -461,49 +461,50 @@
   <!-- ================= BOM ================= -->
   <section class="block">
     <div class="sec-head reveal"><span class="sec-index mono">[03]</span><h2>物料与方案清单</h2><span class="rule"></span></div>
-    <p class="sec-desc reveal">BOM 于 <span class="mono">2026-09-04</span> 核对。这里标的是<b>方案状态</b>，不是库存状态——到货验收会随构建日志更新。</p>
+    <p class="sec-desc reveal">BOM 于 <span class="mono">2026-10-02</span> 全面更新。这里标的是<b>实时到货与执行状态</b>——每项变化随构建日志同步。累计实付 ¥2,739,总预估 ≈¥3,030。</p>
     <div class="bom-grid">
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-A</span><h4>执行器（国产替代）</h4>
-        <div class="bom-item"><span class="n">飞特 HL-1910-C001 ×17<small>Feetech 国产 · 替代 XL330 · 实付 ¥1,591</small></span><span class="st hot mono">已付 · 发货中</span></div>
-        <div class="bom-item"><span class="n">飞特 HL-2915-C001 ×2<small>换装路线先头部队 · 09-13 到货 · 台架六课待实操</small></span><span class="st hot mono">✓ 已到货</span></div>
-        <div class="bom-item"><span class="n">BAM 执行器辨识<small>单摆台架 → 采集 → M1–M6 拟合 → 验证</small></span><span class="st hot mono">舵机已到 · 待实操</span></div>
-        <div class="bom-item"><span class="n">半双工转接板 + UBEC<small>HLS TTL 接口电平/针序待核对</small></span><span class="st mono">方案就绪 · 待核对</span></div>
-        <div class="bom-item"><span class="n">USB 调试板<small>¥45</small></span><span class="st mono">已列入</span></div>
+        <div class="bom-item"><span class="n">飞特 HL-1910-C001 ×17<small>Feetech 国产 · 替代 XL330 · 实付 ¥1,591 · 发货中</small></span><span class="st hot mono">已付 · 发货中</span></div>
+        <div class="bom-item"><span class="n">飞特 HL-2915-C001 ×2<small>¥200 · 到货 · 一好一坏(坏件售后中)</small></span><span class="st hot mono">✓ 到货 · 好件已验收</span></div>
+        <div class="bom-item"><span class="n">URT2 调试板 + 读卡器<small>¥48 + ¥17 · 已到货 · 台架已通</small></span><span class="st hot mono">✓ 到货</span></div>
+        <div class="bom-item"><span class="n">BAM 执行器辨识<small>单摆台架 → 采集 → M1–M6 拟合 → 验证</small></span><span class="st hot mono">台架已通 · 待采集</span></div>
+        <div class="bom-item"><span class="n">半双工转接板 + UBEC<small>HLS TTL 接口电平/针序待核对</small></span><span class="st mono">≈¥47 · 待购</span></div>
       </div>
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-B</span><h4>主控与电路</h4>
-        <div class="bom-item"><span class="n">Radxa ZERO 3W<small>RK3566 · 拆解验证 · 实付 ¥299</small></span><span class="st hot mono">已购 ✓</span></div>
-        <div class="bom-item"><span class="n">Robot HAT C1<small>官方开源设计 · ¥130 · 已到货</small></span><span class="st hot mono">✓ 已到货 · 待点亮</span></div>
-        <div class="bom-item"><span class="n">imu_to_dxl 自绘板<small>固件协议测试 6/6 通过</small></span><span class="st hot mono">设计包就绪 · 待画板</span></div>
+        <div class="bom-item"><span class="n">Radxa ZERO 3W<small>RK3566 · 拆解验证 · ¥299 · 到手</small></span><span class="st hot mono">✓ 到手</span></div>
+        <div class="bom-item"><span class="n">Robot HAT C1<small>官方开源 · ¥130 · 到货</small></span><span class="st hot mono">✓ 到货 · 待点亮</span></div>
+        <div class="bom-item"><span class="n">imu_to_dxl 自绘板<small>嘉立创打样 ¥97 · 到手待焊</small></span><span class="st hot mono">✓ 已购 · 待焊接</span></div>
+        <div class="bom-item"><span class="n">USB 调试板<small>URT2 ¥48 · 已到货已通</small></span><span class="st hot mono">✓ 已到货</span></div>
       </div>
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-C</span><h4>结构件</h4>
-        <div class="bom-item"><span class="n">打印件 30 种 / 41 件<small>PLA 299 g + TPU 26 g</small></span><span class="st hot mono">体检 100% ✓</span></div>
-        <div class="bom-item"><span class="n">外壳 v1 + v2（修正版）<small>v1 ¥99 + v2 ¥120 · v2 已到货装配</small></span><span class="st hot mono">✓ v2 到手</span></div>
-        <div class="bom-item"><span class="n">M2 紧固件 + 热熔螺母<small>≈¥81</small></span><span class="st mono">已列入</span></div>
-        <div class="bom-item"><span class="n">轴承 ×14<small>Ø22×16×4 ×11 + Ø15×10×3 ×3 · 已到货</small></span><span class="st hot mono">✓ 已到货</span></div>
+        <div class="bom-item"><span class="n">外壳 v1 + v2（修正版）<small>v1 ¥99 报废 + v2 ¥120 到货装配</small></span><span class="st hot mono">✓ v2 到手已装</span></div>
+        <div class="bom-item"><span class="n">CNC 加强件<small>¥45 · 到手</small></span><span class="st hot mono">✓ 到手</span></div>
+        <div class="bom-item"><span class="n">轴承 ×14<small>Ø22×16×4 ×11 + Ø15×10×3 ×3 · ¥41 到货</small></span><span class="st hot mono">✓ 已到货</span></div>
+        <div class="bom-item"><span class="n">M2 紧固件 + 热熔螺母<small>≈¥81</small></span><span class="st mono">待购 · 装配必须</span></div>
+        <div class="bom-item"><span class="n">TPU 软件补打(下巴/嘴)<small>≈¥30–50 · 不影响行走</small></span><span class="st mono">待购</span></div>
       </div>
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-D</span><h4>感知</h4>
-        <div class="bom-item"><span class="n">IMX219 相机<small>8 MP · ¥32.8</small></span><span class="st mono">已列入</span></div>
-        <div class="bom-item"><span class="n">VL53L8CX ToF<small>8×8 阵列 · ¥70</small></span><span class="st mono">已列入</span></div>
-        <div class="bom-item"><span class="n">BMI088 IMU<small>随 HAT PCBA</small></span><span class="st mono">随板</span></div>
-        <div class="bom-item"><span class="n">孔径测试片<small>打印公差定标</small></span><span class="st hot mono">待打印 · 高优先级</span></div>
+        <div class="bom-item"><span class="n">IMX219 相机<small>8 MP · ¥32.8</small></span><span class="st mono">待购</span></div>
+        <div class="bom-item"><span class="n">VL53L8CX ToF<small>8×8 阵列 · ¥70</small></span><span class="st mono">待购(可后)</span></div>
+        <div class="bom-item"><span class="n">BMI088 IMU<small>随 HAT PCBA</small></span><span class="st hot mono">✓ 随 HAT 到货</span></div>
       </div>
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-E</span><h4>供电</h4>
-        <div class="bom-item"><span class="n">NP-F550 电池<small>¥52.8 + 扣板 ¥19</small></span><span class="st mono">已列入</span></div>
-        <div class="bom-item"><span class="n">舵机供电支路<small>2S / 6 V 冲突待解</small></span><span class="st risk mono">待设计 · 风险项</span></div>
-        <div class="bom-item"><span class="n">5 V 逻辑降压<small>主控 / 传感器</small></span><span class="st mono">方案就绪</span></div>
+        <div class="bom-item"><span class="n">NP-F550 电池<small>¥52.8 + 扣板 ¥19</small></span><span class="st mono">待购 · 必须</span></div>
+        <div class="bom-item"><span class="n">12V 适配器 ×2<small>¥0 · 已有(小米/YUNTAME 各 2A)</small></span><span class="st hot mono">✓ 已有</span></div>
+        <div class="bom-item"><span class="n">转接板 + UBEC<small>电池 → 舵机/逻辑电压转换</small></span><span class="st mono">≈¥47 · 待购</span></div>
+        <div class="bom-item"><span class="n">舵机供电支路<small>HL-1910 4–8.4V / HL-2915 9–14V</small></span><span class="st risk mono">口径差已实测 · 方案待定</span></div>
       </div>
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-F</span><h4>软件与策略</h4>
-        <div class="bom-item"><span class="n">官方 Rust 运行时<small>50 Hz × 15 舵机闭环</small></span><span class="st hot mono">源码在手</span></div>
+        <div class="bom-item"><span class="n">官方 Rust 运行时<small>50 Hz × 15 舵机闭环 · 942 tests</small></span><span class="st hot mono">源码在手 · 台架已通</span></div>
         <div class="bom-item"><span class="n">官方 9 个 ONNX 策略<small>绑定 XL330 动力学</small></span><span class="st risk mono">已切飞特 · 降级为参考</span></div>
-        <div class="bom-item"><span class="n">行走策略自训<small>基于 BAM 辨识参数（指南 6 阶段）</small></span><span class="st hot mono">路线已定 · 待辨识</span></div>
-        <div class="bom-item"><span class="n">exp001 / exp001b<small>IMU 随机化 + 扰动</small></span><span class="st hot mono">已完成 ✓</span></div>
-        <div class="bom-item"><span class="n">expC 续训<small>长训练</small></span><span class="st hot mono">336/2199 进行中</span></div>
+        <div class="bom-item"><span class="n">行走策略自训<small>基于 BAM 辨识 → 重训</small></span><span class="st hot mono">路线已定 · 台架已通</span></div>
+        <div class="bom-item"><span class="n">exp001/b/C/D/E<small>IMU 随机化 → 拷机 → 步态</small></span><span class="st hot mono">expE 进行中</span></div>
       </div>
     </div>
   </section>
