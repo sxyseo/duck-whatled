@@ -336,6 +336,14 @@ $("btnGoal").onclick = async () => {
     await wr(REG.TORQUE,[1]); $("tState").textContent="开"; $("tState").className="tag on";
     await wr(REG.GOAL,[g&0xFF,(g>>8)&0xFF]);
     log(`目标 ${g} 步(${deg(g)}°) · 速度 ${sp} · 加速度 ${ac}`);
+    // 自动到位即停:轮询位置,到达 ±6 步或 3 秒超时 → 扭矩关(防持续旋转)
+    const t0 = performance.now();
+    while (performance.now() - t0 < 3000) {
+      await new Promise(r=>setTimeout(r,150));
+      try { const d = await rd(REG.POS,2); const cur = d[0]|(d[1]<<8);
+        if (Math.abs(cur-g) <= 6) { await wr(REG.TORQUE,[0]); log(`✓ 到位 ${cur},扭矩自动关`); return; } } catch(e){}
+    }
+    try { await wr(REG.TORQUE,[0]); log("⚠ 3 秒未到位,扭矩自动关(防持续旋转)"); } catch(e){}
   }catch(e){ log("发送失败:"+e.message); }
 };
 $("btnGain").onclick = async () => {
