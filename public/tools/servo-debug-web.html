@@ -178,6 +178,47 @@
 </div>
 </div>
 
+<!-- ======== 多舵机总线管理 ======== -->
+<div style="margin-top:14px">
+  <div class="card">
+    <h2>📡 总线扫描(找所有舵机)</h2>
+    <div class="row">
+      <button id="btnScan" class="primary" disabled>🔍 扫描总线(ID 1–253)</button>
+      <span id="scanStatus" class="mono" style="color:var(--soft);font-size:13px"></span>
+    </div>
+    <div id="scanResult" style="margin-top:8px;font-family:var(--mono);font-size:13px"></div>
+  </div>
+  <div class="card">
+    <h2>🦆 舵机总览(实时)</h2>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:600px">
+      <thead><tr style="color:var(--soft);text-align:left;border-bottom:1px solid var(--line)">
+        <th style="padding:5px 8px">ID</th><th>位置(步)</th><th>角度</th><th>电压</th><th>温度</th><th>负载</th><th>状态</th><th>操作</th>
+      </tr></thead>
+      <tbody id="servoTableBody"></tbody>
+    </table>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="small" id="btnRefreshAll" disabled>🔄 刷新遥测</button>
+      <button class="small" id="btnAllCenter" disabled>全部回中 2048</button>
+      <button class="small" id="btnAllTon" disabled>全部扭矩开</button>
+      <button class="small danger" id="btnAllToff" disabled>全部扭矩关</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🔧 ID 设置(一次只接一只!)</h2>
+    <div class="row">
+      <label>出厂 ID</label>
+      <input id="oldIdSet" type="number" min="1" max="253" value="1" style="width:70px">
+      <label>新 ID</label>
+      <input id="newIdSet" type="number" min="1" max="253" placeholder="如 21" style="width:70px">
+      <button id="btnSetId" class="small danger" disabled>⚙ 写入新 ID(EEPROM)</button>
+    </div>
+    <p class="note" style="color:var(--soft);font-size:12.5px;margin-top:6px">拔掉其他所有舵机 → 接上要设的这只 → 输入出厂 ID(通常 1)和目标 ID → 写入 → REBOOT → 用新 ID PING 验证。逐只操作。</p>
+  </div>
+</div>
+
+
 <script>
 "use strict";
 const $ = (id) => document.getElementById(id);
@@ -293,7 +334,7 @@ $("btnConn").onclick = async () => {
     }
   }catch(e){} })();
   sid=Number($("sid").value); txN=toN=0;
-  ["btnPing","btnReboot","btnInit","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=false);
+  ["btnPing","btnReboot","btnInit","btnScan","btnSetId","btnRefreshAll","btnAllCenter","btnAllTon","btnAllToff","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=false);
   $("state").textContent="已连接"; $("state").className="tag on";
   const m=model();
   log(`已连接 ${baudName()} · ${m.name} · ID=${sid};先 PING,再开始遥测`);
@@ -307,7 +348,7 @@ $("btnDisc").onclick = async () => {
   keepReading=false; try{ reader&&await reader.cancel(); }catch(e){}
   try{ await port.close(); }catch(e){}
   port=null; $("state").textContent="未连接"; $("state").className="tag off";
-  ["btnPing","btnReboot","btnInit","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=true);
+  ["btnPing","btnReboot","btnInit","btnScan","btnSetId","btnRefreshAll","btnAllCenter","btnAllTon","btnAllToff","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=true);
   clearInterval(telemTimer); log("已断开");
 };
 $("btnReboot").onclick = async () => {
@@ -415,6 +456,63 @@ $("btnWrite").onclick = async () => {
 };
 ["btnPing","btnGoal","btnGain","btnRead"].forEach(id=>$(id).disabled=true);
 log("就绪。连接后:先看遥测电压 —— 若 <7V 说明 12V 主电源未上,位置指令不会动作。");
+
+// ======== 多舵机总线管理 ========
+let foundServos = [];
+async function pingId(id) { try { await transact(id, 0x01, [], 0); return true; } catch(e) { return false; } }
+async function readTelemAt(id) {
+  try { const d = await transact(id, 0x02, [56,14], 14);
+    if (!d || d.length < 14) return null;
+    return { pos:d[0]|(d[1]<<8), spd:(d[2]|(d[3]<<8))&0x7FFF, load:(d[4]|(d[5]<<8))&0x7FFF,
+             volt:d[6]/10, temp:d[7], status:d[8], cur:((d[11]|(d[12]<<8))&0x7FFF)*6.5 };
+  } catch(e) { return null; }
+}
+async function writeTo(id, addr, data) {
+  const w = port.writable.getWriter();
+  await w.write(packet(id, 0x03, [addr, ...data])); w.releaseLock();
+  await new Promise(r=>setTimeout(r,40));
+}
+$("btnScan").onclick = async () => {
+  $("btnScan").disabled = true; foundServos = [];
+  $("scanStatus").textContent = "扫描中…"; $("scanResult").textContent = "";
+  for (let id = 1; id <= 253; id++) {
+    $("scanStatus").textContent = `扫描 ${id}/253…`;
+    if (await pingId(id)) { foundServos.push(id); $("scanResult").textContent += `ID ${id} ✓ `; }
+  }
+  $("scanStatus").textContent = `完成,${foundServos.length} 只`;
+  $("scanResult").textContent = foundServos.length ? "已发现: " + foundServos.join(", ") : "未发现(查接线/共地/波特率)";
+  $("btnScan").disabled = false;
+  ["btnRefreshAll","btnAllCenter","btnAllTon","btnAllToff","btnSetId"].forEach(x=>$(x).disabled = !foundServos.length);
+  if (foundServos.length) refreshAll();
+};
+async function refreshAll() {
+  const tb = $("servoTableBody"); let html = "";
+  for (const id of foundServos) {
+    const t = await readTelemAt(id);
+    if (!t) { html += `<tr><td colspan="8" style="color:var(--red);padding:4px 8px">ID ${id} 无应答</td></tr>`; continue; }
+    const deg = ((t.pos-2048)*360/4096).toFixed(1);
+    const st = t.status === 0 ? '<span style="color:var(--green)">正常</span>' : `<span style="color:var(--red)">⚠${t.status}</span>`;
+    html += `<tr style="border-bottom:1px solid var(--line)"><td style="padding:4px 8px;font-family:var(--mono);font-weight:700;color:var(--orange)">${id}</td><td style="font-family:var(--mono)">${t.pos}</td><td style="font-family:var(--mono)">${deg}°</td><td style="font-family:var(--mono)">${t.volt.toFixed(1)}V</td><td style="font-family:var(--mono)">${t.temp}°C</td><td style="font-family:var(--mono)">${t.load}</td><td>${st}</td><td><button class="small" onclick="selServo(${id})">选择</button> <button class="small" onclick="centerOne(${id})">回中</button></td></tr>`;
+  }
+  tb.innerHTML = html;
+}
+window.selServo = function(id) { $("sid").value = id; sid = id; log(`已选 ID ${id}`); };
+window.centerOne = async function(id) { await writeTo(id,40,[1]); await writeTo(id,42,[2048&0xFF,2048>>8]); log(`ID ${id} → 2048`); };
+$("btnRefreshAll").onclick = refreshAll;
+$("btnAllCenter").onclick = async () => { for (const id of foundServos) { await writeTo(id,40,[1]); await writeTo(id,42,[2048&0xFF,2048>>8]); } log(`全部 ${foundServos.length} 只 → 2048`); refreshAll(); };
+$("btnAllTon").onclick = async () => { for (const id of foundServos) await writeTo(id,40,[1]); log("全部扭矩开"); };
+$("btnAllToff").onclick = async () => { for (const id of foundServos) await writeTo(id,40,[0]); log("全部扭矩关"); };
+$("btnSetId").onclick = async () => {
+  const old = Number($("oldIdSet").value), nw = Number($("newIdSet").value);
+  if (nw < 1 || nw > 253) return log("ID 范围 1–253");
+  if (old === nw) return log("新旧相同");
+  if (!confirm(`将 ID ${old} 改为 ${nw}?\n⚠ 一次只接一只!写完 REBOOT 后用新 ID 通信。`)) return;
+  try { await writeTo(old,55,[0]); await writeTo(old,5,[nw]); await writeTo(old,55,[1]);
+    log(`✓ ID ${old} → ${nw} 已写入。REBOOT 后用新 ID 验证。`); foundServos = foundServos.map(x=>x===old?nw:x);
+  } catch(e) { log(e.message); }
+};
+// 初始禁用
+["btnScan","btnRefreshAll","btnAllCenter","btnAllTon","btnAllToff","btnSetId"].forEach(x=>{const el=$(x);if(el)el.disabled=true;});
 </script>
 </body>
 </html>
