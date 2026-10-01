@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HL-2915 舵机调试台 · 什么鸭 WhatDuck</title>
+<title>HL 系列舵机调试台(2915 / 1910) · 什么鸭 WhatDuck</title>
 <meta name="description" content="浏览器里直接调试飞特 HL-2915/HL-1910 总线舵机:Web Serial 连接 URT2,遥测仪表、位置控制、增益与限位参数设置。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <style>
@@ -46,7 +46,7 @@
 </style>
 </head>
 <body>
-<h1><span class="duck">▲</span> HL-2915 舵机调试台</h1>
+<h1><span class="duck">▲</span> HL 系列舵机调试台 <span style="color:var(--soft);font-size:15px;font-weight:400">(HL-2915 / HL-1910 / 通用磁编码)</span></h1>
 <p class="sub">Web Serial 直连 URT2 调试板 · 需 Chrome/Edge · 协议:飞特磁编码 v1 · 1 Mbps ·
 <a href="/learn/deep-203">台架实操教程</a> · <a href="/learn/deep-63">六课方法论</a> · <a href="/">什么鸭首页</a></p>
 
@@ -54,6 +54,14 @@
 <div>
   <div class="card">
     <h2>连接</h2>
+    <div class="row">
+      <label>舵机型号</label>
+      <select id="model">
+        <option value="2915" selected>HL-2915-C001(9–14V · 推荐 12V)</option>
+        <option value="1910">HL-1910-C001(4–8.4V · 推荐 7.4V 2S)</option>
+        <option value="gen">其他磁编码型号(自行核对)</option>
+      </select>
+    </div>
     <div class="row">
       <label>波特率</label>
       <select id="baud"><option value="1000000" selected>1,000,000(默认)</option><option value="500000">500,000</option><option value="115200">115,200</option></select>
@@ -72,7 +80,7 @@
       <button id="btnTelem" disabled>开始遥测</button>
       <button class="danger" id="btnStop" disabled>⛔ 急停(扭矩关)</button>
     </div>
-    <p class="note">连接前:12V 限流电源已上电(9–14V 窗),URT2 共地;列表为空时拔插 USB。Web Serial 仅 Chrome/Edge 支持。</p>
+    <p class="note">连接前:主电源已上电并<b>限流 0.5A</b>(HL-2915=12V / HL-1910=7.4V 2S),URT2 共地;列表为空时拔插 USB。Web Serial 仅 Chrome/Edge 支持。</p>
   </div>
 
   <div class="card">
@@ -126,7 +134,7 @@
       <button id="btnGain" disabled>写增益</button>
       <button id="btnGainRead" class="small" disabled>读回</button>
     </div>
-    <p class="note">HL-2915 P/D/I 为单字节 0–255;过大可能震荡,失力状态(limp)参考 P≈50。</p>
+    <p class="note">HL 系列 P/D/I 为单字节 0–255;过大可能震荡,失力状态(limp)参考 P≈50。P 的运行时映射因固件而异(见解读 201 的 0.16 系数案例)。</p>
   </div>
 
   <div class="card">
@@ -146,7 +154,7 @@
       <button id="btnEeprom" disabled>写入 EEPROM(需 LOCK=0)</button>
       <button id="btnEepromRead" class="small" disabled>读回</button>
     </div>
-    <p class="note">写入前会自动检查 55 号锁位(=1 时拒绝);12V 供电前确认电压上限 ≥13.0V。写错行程可能造成撞击。</p>
+    <p class="note">写入前会自动检查 55 号锁位(=1 时拒绝);供电前确认电压上限 ≥ 实际电源电压(HL-2915@12V → ≥13.0V;HL-1910 默认 8.4 即可)。写错行程可能造成撞击。</p>
   </div>
 
   <div class="card">
@@ -176,6 +184,17 @@ const REG = {FIRM:0,ID:5,BAUD:6,DELAY:7,RESP:8,AMIN:9,AMAX:11,TMAX:13,VMAX:14,VM
              POS:56,SPDNOW:58,LOAD:60,VOLT:62,TEMP:63,STATUS:65,MOVING:66,CUR:69};
 let port=null, reader=null, keepReading=false, buf=new Uint8Array(0);
 let sid=1, txN=0, toN=0, telemTimer=null;
+const MODELS={
+  "2915":{name:"HL-2915-C001", vrec:"12V",     warnBelow:9.0, vdef:16.0},
+  "1910":{name:"HL-1910-C001", vrec:"7.4V(2S)",warnBelow:4.5, vdef:8.4},
+  "gen": {name:"磁编码通用",    vrec:"规格书值", warnBelow:4.5, vdef:16.0}
+};
+function model(){ return MODELS[$("model").value]; }
+$("model").onchange = () => {
+  const m=model();
+  $("vMax").value = m.vdef.toFixed(1);
+  log(`型号切换:${m.name} · 工作窗 ${m.warnBelow}–${m===MODELS["2915"]?14.0:m===MODELS["1910"]?8.4:16.0}V · 推荐 ${m.vrec}`);
+};
 
 function log(msg, cls){ const d=document.createElement("div"); if(cls) d.className=cls;
   d.innerHTML = `<span class="t">[${new Date().toLocaleTimeString()}]</span> ${msg}`;
@@ -240,7 +259,8 @@ function updTelem(){
   const load=u16(this[4],this[5])&0x7FFF, volt=this[6]/10, temp=this[7], stat=this[8];
   const cur=(u16(this[11],this[12])&0x7FFF)*6.5;
   $("tPos").textContent=pos; $("tDeg").textContent=`/ ${deg(pos)}°`;
-  $("tVolt").textContent=`${volt.toFixed(1)} V${volt<7?" ⚠ 主电源未上":""}`;
+  const m=model(); const vwarn = volt < m.warnBelow ? ` ⚠ 低于 ${m.vrec} 工作区` : "";
+  $("tVolt").textContent=`${volt.toFixed(1)} V${vwarn}`;
   $("tTemp").textContent=`${temp} °C`; $("tCur").textContent=`${cur.toFixed(0)} mA(口径待验证)`;
   $("tSpd").textContent=`${spd} 步/s / ${load} (0.1%)`;
   $("tStat").innerHTML=statusBits(stat);
@@ -273,7 +293,8 @@ $("btnConn").onclick = async () => {
   sid=Number($("sid").value); txN=toN=0;
   ["btnPing","btnTelem","btnStop","btnGoal","btnGain","btnGainRead","btnEeprom","btnEepromRead","btnRead","btnWrite","btnDisc"].forEach(id=>$(id).disabled=false);
   $("state").textContent="已连接"; $("state").className="tag on";
-  log(`已连接 ${baudName()};ID=${sid};先 PING,再开始遥测`);
+  const m=model();
+  log(`已连接 ${baudName()} · ${m.name} · ID=${sid};先 PING,再开始遥测`);
   try{ const f=await rd(REG.FIRM,2); log(`固件 v${f[0]}.${f[1]} | ID 寄存器=${(await rd(REG.ID,1))[0]} | 电压窗 ${(await rd(REG.VMIN,1))[0]/10}–${(await rd(REG.VMAX,1))[0]/10}V`);
       const tq=await rd(REG.TORQUE,1); $("tState").textContent=tq[0]?"开":"关"; $("tState").className="tag "+(tq[0]?"on":"off");
   }catch(e){ log("读固件信息失败: "+e.message); }
