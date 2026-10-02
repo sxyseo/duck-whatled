@@ -82,14 +82,11 @@
   <tr>
     <td><span class="wt">⬜</span> <b>供电扣板</b></td>
     <td><a class="q" target="_blank" href="https://s.taobao.com/list?q=NP-F+电池扣板+Type-C">淘宝「NP-F 电池扣板 Type-C」</a></td>
-    <td>NP-F 卡口;<b>输出为电池原电压 7.4V 直出</b>(裸线或 DC5521;别买只出 5V 的)</td>
+    <td>NP-F 卡口;<b>输出为电池原电压 7.4V 直出</b>(裸线或 DC5521;别买只出 5V 的)。<b>用途:把电池物理固定在鸭子躯干里并引出电源线——没有它电池只能胶带缠,不可靠</b></td>
     <td>¥19</td>
   </tr>
   <tr>
-    <td><span class="wt">⬜</span> <b>UBEC</b></td>
-    <td><a class="q" target="_blank" href="https://s.taobao.com/list?q=UBEC+5V+3A">淘宝「UBEC 5V 3A」</a></td>
-    <td>输入覆盖 2S(6–8.4V)→ 输出 5V≥3A;<b>必须开关式</b>(线性稳压压差不够)。<b>为什么必须:电池 7.4V 直接给舵机总线,但 Radxa 主控要稳定 5V≥3A——没有它主控点不了</b></td>
-    <td>≈¥25</td>
+    <tr><td colspan="4" style="color:var(--green)">✓ UBEC 不需要——HAT 板内置 AP63205 buck(12V→5V 2A)已覆盖主控供电</td></tr>
   </tr>
   <tr>
     <td><span class="ck">✅</span> <b>M2 螺丝(12.9 级)</b></td>
@@ -100,7 +97,7 @@
   <tr>
     <td><span class="wt">⬜</span> <b>热熔螺母</b></td>
     <td><a class="q" target="_blank" href="https://s.taobao.com/list?q=M2+热熔螺母+铜嵌件+滚花">淘宝「M2 热熔螺母 铜嵌件 滚花」</a></td>
-    <td>铜、双通道滚花、M2×外径~4.6×长~4.8mm(M2+M3 混装更划算)<small>参考实购:榕誉微 400pcs ¥22 [taobao 1000673642588]</small></td>
+    <td>铜、双通道滚花、M2×外径~4.6×长~4.8mm(M2+M3 混装更划算)。<b>用途:用烙铁加热压入 3D 打印件的预留孔,形成金属螺纹——M2 螺丝拧进螺母而不是直接拧塑料,反复拆装不会滑丝,连接强度远高于自攻</b><small>参考实购:榕誉微 400pcs ¥22 [taobao 1000673642588]</small></td>
     <td>¥22</td>
   </tr>
   <tr>
@@ -127,16 +124,10 @@
     <td>¥33</td>
   </tr>
   <tr>
-    <td><span class="wt">⬜</span> CSI 排线</td>
-    <td><a class="q" target="_blank" href="https://s.taobao.com/list?q=15pin+转+22pin+CSI+排线">淘宝「15pin 转 22pin CSI 排线」</a></td>
-    <td>15P 1.0mm → 22P 0.5mm,金手指对插;长度 <b>4–15cm 买最短</b></td>
-    <td>¥2–5</td>
+    <tr><td colspan="4" style="color:var(--green)">✓ CSI 排线不需要——IMX219 模组自带</td></tr>
   </tr>
   <tr>
-    <td><span class="wt">⬜</span> TPU 补打</td>
-    <td><a class="q" target="_blank" href="https://www.jlc-3dp.cn/">嘉立创三维上传 STL</a></td>
-    <td>材料 <b>TPU 95A</b>、填充 ≥30%、壁 ≥3 圈;文件 <code>jaw_soft_软下巴.stl</code> + <code>soft_mouth_top_软嘴顶部.stl</code>(共 26g;不影响行走,影响叼取)</td>
-    <td>¥30–50</td>
+    <tr><td colspan="4" style="color:var(--green)">✓ TPU 补打不需要——v2 外壳已含软下巴/软嘴件</td></tr>
   </tr>
   <tr>
     <td><span class="ck">✅</span> <b>双槽充电器</b></td>
