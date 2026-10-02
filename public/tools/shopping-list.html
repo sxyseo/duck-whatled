@@ -42,7 +42,7 @@
   <tr>
     <td><b>电池</b></td>
     <td><a class="q" target="_blank" href="https://s.taobao.com/list?q=唯卓仕+NP-F550">淘宝搜「唯卓仕 NP-F550」</a></td>
-    <td>NP-F550/F570 规格(38.4×20.6×70.8mm,<b>⚠ F970 装不进</b>);7.4V 2S;≥2200mAh;带 Type-C/micro 充电口<small>清单出处:物料清单-进度快照 §第二批</small></td>
+    <td>NP-F550/F570 规格(38.4×20.6×70.8mm,<b>⚠ F970 装不进</b>);7.4V 2S;≥2200mAh;带 Type-C/micro 充电口。<b>续航估算:官方整机约 1 小时(平均电流 ≈2.5A);建议备 2 块轮换</b><small>出处:硬件方案逆向 §电流核算;HL-1910 额定 900mA@7.4V、堵转 2.0A</small></td>
     <td>¥53</td>
   </tr>
   <tr>
@@ -52,15 +52,15 @@
     <td>¥19</td>
   </tr>
   <tr>
-    <td><b>总线转接板</b></td>
-    <td><a class="q" target="_blank" href="https://s.taobao.com/list?q=飞特+TTL+总线舵机驱动板">淘宝搜「飞特 TTL 总线舵机驱动板」</a></td>
-    <td>飞特 ST/SC/<b>HLS</b> 通用;UART(TX/RX)→半双工 TTL;<b>确认支持 1Mbps</b></td>
-    <td>¥22–26</td>
+    <td><s><b>总线转接板</b></s></td>
+    <td><s><a class="q" target="_blank" href="https://s.taobao.com/list?q=飞特+TTL+总线舵机驱动板">淘宝搜「飞特 TTL 总线舵机驱动板」</a></s></td>
+    <td><b>✓ 已购</b>(与 URT2 一并)。注意区分:URT2 是 USB 调试板(接电脑);鸭子体内最终要装的是 UART→半双工 TTL 的驱动板,两者作用不同。</td>
+    <td>✓</td>
   </tr>
   <tr>
     <td><b>UBEC</b></td>
     <td><a class="q" target="_blank" href="https://s.taobao.com/list?q=UBEC+5V+3A">淘宝搜「UBEC 5V 3A」</a></td>
-    <td>输入覆盖 2S(6–8.4V)降压输出 5V≥3A;<b>线性稳压器不行</b>(压差不够)</td>
+    <td>输入覆盖 2S(6–8.4V)降压输出 5V≥3A;<b>线性稳压器不行</b>(压差不够)。<b>为什么必须:电池 7.4V 直接给舵机总线,但 Radxa 主控需要稳定 5V≥3A——UBEC 就是这个降压转换器,没有它主控点不了</b></td>
     <td>≈¥25</td>
   </tr>
   <tr>
@@ -88,7 +88,7 @@
   <tr>
     <td><b>相机</b></td>
     <td><a class="q" target="_blank" href="https://s.taobao.com/list?q=IMX219+摄像头+树莓派">淘宝搜「IMX219 摄像头 树莓派」</a></td>
-    <td>传感器必须 <b>IMX219</b>(800 万,非 OV5647);接口 <b>15pin 1.0mm 排针座</b>版<small>参考实购:DECXIN ¥32.8 [tmall 775872575316]</small></td>
+    <td>传感器必须 <b>IMX219</b>(800 万,非 OV5647);接口 <b>15pin 1.0mm 排针座</b>版。<b>为什么锁死 IMX219:Radxa ZERO 3W 的设备树 overlay(radxa-zero3-rpi-camera-v2)与 ISP 配置(SENSOR=imx219)只认这颗传感器——换高分辨率型号要重写内核设备树 + ISP 管线,工作量远超收益;且头部仅留 13mm 相机位</b><small>出处:电控采购清单 §三、setup-board.sh:748</small></td>
     <td>¥33</td>
   </tr>
   <tr>
