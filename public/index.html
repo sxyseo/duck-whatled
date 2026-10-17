@@ -86,6 +86,9 @@
   .photo-card{position:relative;background:#fff;border:1.5px solid var(--ink);border-radius:6px;padding:14px 14px 12px;box-shadow:8px 8px 0 rgba(33,26,17,.14);transform:rotate(-1.4deg)}
   .photo-card img{width:100%;height:auto;display:block;border-radius:3px}
   .photo-card video{width:100%;height:auto;display:block;border-radius:3px;background:#000}
+  .media-grid .photo-card{display:flex;flex-direction:column}
+  .media-grid .photo-card img,.media-grid .photo-card video{aspect-ratio:720/1280;object-fit:cover}
+  .media-grid .photo-card figcaption{margin-top:auto}
   .photo-card figcaption{font-family:var(--mono);font-size:12px;color:var(--ink-soft);padding-top:10px;display:flex;justify-content:space-between;gap:8px}
   .photo-card figcaption span:last-child{white-space:nowrap;flex-shrink:0}
   .tape{position:absolute;width:92px;height:26px;background:rgba(240,180,41,.42);border-left:1px dashed rgba(33,26,17,.2);border-right:1px dashed rgba(33,26,17,.2);backdrop-filter:blur(1px)}
@@ -502,7 +505,7 @@
         <div class="bom-item"><span class="n">CNC 加强件<small>¥45 · 到手</small></span><span class="st hot mono">✓ 到手</span></div>
         <div class="bom-item"><span class="n">轴承 ×14<small>Ø22×16×4 ×11 + Ø15×10×3 ×3 · ¥41 到货</small></span><span class="st hot mono">✓ 已到货</span></div>
         <div class="bom-item"><span class="n">M2 螺丝 12.9 级 + 热熔螺母<small>螺丝 ¥12.4 到手 · 热熔套件 M2–M8 ¥12.86 + M2 铜螺母×50 ¥1.8 已购</small></span><span class="st hot mono">✓ 已购</span></div>
-        <div class="bom-item"><span class="n">TPU 软件补打(下巴/嘴)<small>≈¥30–50 · 不影响行走</small></span><span class="st mono">待购</span></div>
+        <div class="bom-item"><span class="n">TPU 软件补打(下巴/嘴/脚底)<small>自有打印机补打完成,材料未单独记账</small></span><span class="st mono">✓ 已补打 · 10-17</span></div>
       </div>
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-D</span><h4>感知</h4>
@@ -546,7 +549,7 @@
         <div class="cost reveal">
           <div class="c-head"><b>外壳 v1 + v2（修正版）</b><span class="mono">¥219 · <span class="pay paid">已付 ✓</span></span></div>
           <div class="c-bar"><i data-w="8%"></i></div>
-          <p class="cost-sub mono">v1 ¥99（结构不对报废）+ v2 ¥120 · TPU 补打另计 ¥30–50</p>
+          <p class="cost-sub mono">v1 ¥99（结构不对报废）+ v2 ¥120 · TPU 软件补打(下巴/嘴/脚底)已自打完成,不另计</p>
         </div>
         <div class="cost pending reveal">
           <div class="c-head"><b>Robot HAT C1 板</b><span class="mono">¥130 · <span class="pay paid">已付 ✓</span></span></div>
@@ -616,7 +619,7 @@
         <div class="cost pending reveal">
           <div class="c-head"><b>余待购（热熔压头）</b><span class="mono">≈¥15 · <span class="pay todo">待购</span></span></div>
           <div class="c-bar"><i data-w="15%"></i></div>
-          <p class="cost-sub mono">ToF 重购已落定(V2 ¥49.5 ✓);扣板 ✓ · 热熔螺母 ✓ · 连接线 ✓;UBEC/CSI/TPU 均不需要(HAT 内置/相机自带/v2 已含)</p>
+          <p class="cost-sub mono">ToF 重购已落定(V2 ¥49.5 ✓);扣板 ✓ · 热熔螺母 ✓ · 连接线 ✓;UBEC/CSI 不需要(HAT 内置/相机自带);TPU 软件补打(下巴/嘴/脚底)已自打完成 ✓</p>
         </div>
         <div class="cost pending reveal">
           <div class="c-head"><b>机械（轴承 ✓ / M2 ✓ / 耗材）</b><span class="mono">≈¥160–280 · <span class="pay todo">余耗材</span></span></div>
