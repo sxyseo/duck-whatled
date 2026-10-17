@@ -329,7 +329,7 @@
       <span class="chip">首版外壳 <b>已到货 · 组装 ✓</b></span>
       <span class="chip">expE 步态重训 · <b>50k</b> 迭代目标</span>
       <span class="chip">执行器 · <b>国产飞特</b> HL-1910-C001 ×17</span>
-      <span class="chip">已投入 <b>¥2,674</b> · 核心硬件全部到位</span>
+      <span class="chip">已投入 <b>≈¥3,369</b> · 核心硬件全部到位</span>
     </div>
 
     <div class="hero-grid">
@@ -479,7 +479,7 @@
   <!-- ================= BOM ================= -->
   <section class="block">
     <div class="sec-head reveal"><span class="sec-index mono">[03]</span><h2>物料与方案清单</h2><span class="rule"></span></div>
-    <p class="sec-desc reveal">BOM 于 <span class="mono">2026-10-14</span> 全面更新。这里标的是<b>实时到货与执行状态</b>——每项变化随构建日志同步。累计实付 ¥2,739,总预估 ≈¥3,030。<b><a href="/tools/shopping-list" style="color:var(--yellow)">完整购买清单(已购打钩 + 待购带链接) ↗</a></b>。</p>
+    <p class="sec-desc reveal">BOM 于 <span class="mono">2026-10-17</span> 全面更新。这里标的是<b>实时到货与执行状态</b>——每项变化随构建日志同步。累计实付 ≈¥3,369,总预估 ≈¥3,400。<b><a href="/tools/shopping-list" style="color:var(--yellow)">完整购买清单(已购打钩 + 待购带链接) ↗</a></b>。</p>
     <div class="bom-grid">
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-A</span><h4>执行器（国产替代）</h4>
@@ -507,7 +507,7 @@
       <div class="bom-card reveal">
         <span class="g-no mono">GRP-D</span><h4>感知</h4>
         <div class="bom-item"><span class="n">IMX219 相机<small>树莓派 MIPI CSI · ¥43.8 到手</small></span><span class="st hot mono">✓ 已到货</span></div>
-        <div class="bom-item"><span class="n">VL53L8CX ToF<small>8×8 阵列 · 首只 ¥71.8 已退货(模组尺寸大于头部安装位)</small></span><span class="st mono">已退 · 待重购</span></div>
+        <div class="bom-item"><span class="n">VL53L5CX V2 ToF<small>多区测距 · 替换退货的 VL53L8CX(¥71.8 尺寸超头部安装位);V2 紧凑载板装得进</small></span><span class="st mono">已购 · 10-17</span></div>
         <div class="bom-item"><span class="n">BMI088 IMU<small>随 HAT PCBA</small></span><span class="st hot mono">✓ 随 HAT 到货</span></div>
       </div>
       <div class="bom-card reveal">
@@ -530,7 +530,7 @@
   <!-- ================= BUDGET ================= -->
   <section class="block">
     <div class="sec-head reveal"><span class="sec-index mono">[04]</span><h2>这只鸭子要花多少钱</h2><span class="rule"></span></div>
-    <p class="sec-desc reveal">自 <span class="mono">2026-09-06</span> 起逐笔实付记账，<b>累计已投入 ¥2,984</b>（含工具 ¥120 与首版报废 ¥99；10-03 ToF 退货 −¥71.8，新购 +¥50.6）。不含已有 3D 打印机。详细清单见下方逐项。</p>
+    <p class="sec-desc reveal">自 <span class="mono">2026-09-06</span> 起逐笔实付记账，<b>累计已投入 ≈¥3,369</b>（含工具与操控装备 ≈¥250 与首版报废 ¥99；10-03 ToF 退货 −¥71.8，10-17 组装收尾 + 行走装备批次 +¥384.5）。不含已有 3D 打印机。详细清单见下方逐项。</p>
     <div class="budget">
       <div class="cost-rows">
         <div class="cost major reveal">
@@ -591,7 +591,12 @@
         <div class="cost pending reveal">
           <div class="c-head"><b>ToF VL53L8CX(8×8)</b><span class="mono">¥71.8 · <span class="pay todo">已退货 ↩</span></span></div>
           <div class="c-bar"><i data-w="10%"></i></div>
-          <p class="cost-sub mono">模组尺寸大于头部安装位,装不进 → 整单退回 · 重购前先定紧凑安装方案(≈¥70–80)</p>
+          <p class="cost-sub mono">模组尺寸大于头部安装位,装不进 → 整单退回 · 已定替换:VL53L5CX V2 紧凑载板 ¥49.5(10-17 购入)</p>
+        </div>
+        <div class="cost reveal">
+          <div class="c-head"><b>10-17 批次（收尾 + 行走装备）</b><span class="mono">¥384.5 · <span class="pay paid">已付 ✓</span></span></div>
+          <div class="c-bar"><i data-w="100%"></i></div>
+          <p class="cost-sub mono">ToF V2 49.5 + 手柄 63.84 + 电动螺丝刀 115 + 舵机线 23.14 + 音箱 16.8 + 连接器/线材/开关/风扇/杂项 · 含弯路:IMU 调试配件 46.56(最终用 imu_to_dxl 板)</p>
         </div>
         <div class="cost reveal">
           <div class="c-head"><b>URT2 调试板 + 读卡器</b><span class="mono">¥65 · <span class="pay paid">已付 ✓</span></span></div>
@@ -609,9 +614,9 @@
           <p class="cost-sub mono">热熔螺母套件 M2–M8 ¥12.86 + M2×2.5×3.5 滚花铜螺母×50 ¥1.8 + 乐泰 243 10ml ¥18.02</p>
         </div>
         <div class="cost pending reveal">
-          <div class="c-head"><b>余电子（ToF 重购）</b><span class="mono">≈¥70–80 · <span class="pay todo">待购</span></span></div>
+          <div class="c-head"><b>余待购（热熔压头）</b><span class="mono">≈¥15 · <span class="pay todo">待购</span></span></div>
           <div class="c-bar"><i data-w="15%"></i></div>
-          <p class="cost-sub mono">首只 ¥71.8 已退货(尺寸偏大装不进),重购前定紧凑安装方案;扣板 ✓ ¥17.9 · 热熔螺母 ✓ 已购;UBEC/CSI/TPU 均不需要(HAT 内置/相机自带/v2 已含)</p>
+          <p class="cost-sub mono">ToF 重购已落定(V2 ¥49.5 ✓);扣板 ✓ · 热熔螺母 ✓ · 连接线 ✓;UBEC/CSI/TPU 均不需要(HAT 内置/相机自带/v2 已含)</p>
         </div>
         <div class="cost pending reveal">
           <div class="c-head"><b>机械（轴承 ✓ / M2 ✓ / 耗材）</b><span class="mono">≈¥160–280 · <span class="pay todo">余耗材</span></span></div>
@@ -621,8 +626,8 @@
       </div>
       <aside class="budget-side reveal">
         <span class="t mono">SPENT SO FAR · 已实付</span>
-        <div class="sum mono">¥2,984</div>
-        <p class="alt">总预估 <b>≈¥3,080–3,100</b>(含工具 ¥120 + 首版报废 ¥99;余 ToF 重购/压头/连接线 ≈¥100)。<br>对照官方整机 <b>$399 ≈ ¥2,900</b>——略超;纯硬件(去工具/报废)约 <b>¥2,765</b>。</p>
+        <div class="sum mono">≈¥3,369</div>
+        <p class="alt">总预估 <b>≈¥3,380–3,400</b>(含工具与操控装备 ≈¥250 + 首版报废 ¥99;仅余热熔压头 ≈¥15)。<br>对照官方整机 <b>$399 ≈ ¥2,900</b>——超约 ¥470(16%);纯硬件(去工具/装备/报废)约 <b>¥3,020</b>。</p>
         <blockquote>"没打印机就代打，别为一只鸭子专门买 ¥2,500 的打印机。"</blockquote>
       </aside>
     </div>
